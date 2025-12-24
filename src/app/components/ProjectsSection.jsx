@@ -1,25 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
-// import ProjectTag from "../components/ProjectTag";
 import { motion, useInView } from "framer-motion";
-// import   AdminNavbar   from "../components/admin/AdminNavbar";
 
 const ProjectsSection = () => {
-  const [tag, setTag] = useState("All");
-  const ref = useRef(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-
-  const handleTagChange = (newTag) => {
-    setTag(newTag);
-  };
-
-  //   const filteredProjects = projectsData.filter((project) =>
-  //     project.tag.includes(tag)
-  //   );
 
   const cardVariants = {
     initial: { y: 50, opacity: 0 },
@@ -27,46 +16,72 @@ const ProjectsSection = () => {
   };
 
   useEffect(() => {
-    fetch('/api/admin/project')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        console.log(`data...`, data)
-        setLoading(false)
-      })
-  }, [])
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/admin/project');
+        
+        if (!response.ok) {
+          throw new Error(`Error al cargar proyectos: ${response.status}`);
+        }
 
-  //   if (isLoading) return <p>Loading...</p>
-  //   if (!data) return <p>No profile data</p>
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchProjects();
+  }, []);
 
+  // if (isLoading) {
+  //   return (
+  //     <section id="projects" className="py-20">
+  //       <h2 className="text-center text-4xl font-bold text-white mt-4 mb-8 md:mb-12">
+  //         My Projects
+  //       </h2>
+  //       <div className="text-center text-white">
+  //         <div className="animate-pulse">Cargando proyectos...</div>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
-  return (
+  // if (error) {
+  //   return (
+  //     <section id="projects" className="py-20">
+  //       <h2 className="text-center text-4xl font-bold text-white mt-4 mb-8 md:mb-12">
+  //         My Projects
+  //       </h2>
+  //       <div className="text-center text-red-400">
+  //         Error al cargar proyectos: {error}
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
-    <>
-      {/* <AdminNavbar /> */}
-      <section id="projects">
+  if (!data || data.length === 0) {
+    return (
+      <section id="projects" className="py-20">
         <h2 className="text-center text-4xl font-bold text-white mt-4 mb-8 md:mb-12">
           My Projects
         </h2>
-        <div className="text-white flex flex-row justify-center items-center gap-2 py-6">
-          {/* <ProjectTag
-          // onClick={handleTagChange}
-          name="All"
-          // isSelected={tag === "All"}
-        />
-        <ProjectTag
-          // onClick={handleTagChange}
-          name="Web"
-          // isSelected={tag === "Web"}
-        />
-        <ProjectTag
-          // onClick={handleTagChange}
-          name="Mobile"
-          // isSelected={tag === "Mobile"}
-        /> */}
+        <div className="text-center text-gray-400">
+          No hay proyectos disponibles
         </div>
-        <ul ref={ref} className="grid md:grid-cols-3 gap-8 md:gap-12">
+      </section>
+    );
+  }
+
+  return (
+    <section id="projects">
+      <h2 className="text-center text-4xl font-bold text-white mt-4 mb-8 md:mb-12">
+        My Projects
+      </h2>
+       <ul ref={ref} className="grid md:grid-cols-3 gap-8 md:gap-12">
           {data?.map((project, index) => (
             <motion.li
               key={project._id}
@@ -87,9 +102,7 @@ const ProjectsSection = () => {
             </motion.li>
           ))}
         </ul>
-      </section>
-    </>
-
+    </section>
   );
 };
 

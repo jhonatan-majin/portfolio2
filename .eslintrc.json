@@ -1,9 +1,13 @@
 {
+  "extends": ["next/core-web-vitals"],
   "rules": {
-    "no-alert": "off",
-    "quotes": [
-      "error",
-      "single"
-    ]
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "prefer-const": "warn",
+    "no-var": "error",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "@next/next/no-img-element": "warn",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

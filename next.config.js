@@ -1,10 +1,26 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
-
-// module.exports = nextConfig
-
-module.exports = {
- eslint: {
-  ignoreDuringBuilds: true,
- },
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+    ],
+  },
+  eslint: {
+    // Solo durante el desarrollo, en producción debe ejecutarse
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    // Activar comprobación de tipos en build
+    ignoreBuildErrors: false,
+  },
+  experimental: {
+    serverActions: true,
+  },
 };
+
+module.exports = nextConfig;
