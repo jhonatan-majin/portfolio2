@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../database";
 import { Hero } from "../../../models";
+import { Model } from 'mongoose';
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -36,8 +37,8 @@ export async function GET(req: Request, res: Response) {
   try {
     await db.connect();
 
-    const HeroList = await Hero.find()
-
+    const HeroList = await (Hero as Model<any>).find().lean();
+    
     return new Response(JSON.stringify(HeroList), {
       status: 201,
       headers: { 'Content-Type': 'application/json' }

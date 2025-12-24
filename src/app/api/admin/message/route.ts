@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../database";
 import { Message } from "../../../models";
+import { Model } from 'mongoose';
 
   export async function POST(req: Request, res: Response) {
     try {
@@ -31,7 +32,7 @@ import { Message } from "../../../models";
     try {
       await db.connect();
 
-      const messageList = await Message.find()
+      const messageList = await (Message as Model<any>).find().lean();
 
       return new Response(JSON.stringify(messageList), {
         status: 201,

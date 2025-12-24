@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { db } from "../../../../database";
 import { Hero } from "../../../../models";
 import { isValidObjectId } from "mongoose";
+import { Model } from 'mongoose';
 
 const url = process.env.API_URL;
 
@@ -16,7 +17,7 @@ interface Params {
       await db.connect();
       const { id } = await params;
 
-      const hero = await Hero.findById(id);
+      const hero = await (Hero as Model<any>).findById(id).lean();
   
     return new Response(JSON.stringify(hero), {
         status: 201,
@@ -39,7 +40,7 @@ interface Params {
       await db.connect();
       const { id } = await params;
 
-      const hero = await Hero.findByIdAndDelete(id);
+      const hero = await (Hero as Model<any>).findByIdAndDelete(id).lean();
   
     return new Response(JSON.stringify(hero), {
         status: 201,
@@ -70,7 +71,8 @@ interface Params {
             );
       }
 
-      const hero = await Hero.findByIdAndUpdate(id, body);
+      const hero = await (Hero as Model<any>).findByIdAndDelete(id, body).lean();
+
 
     //  await roject.updateOne(req.body);
     return NextResponse.json({message: `Hero con el ID ${id} actualizado`, data: body}, { status: 200 });

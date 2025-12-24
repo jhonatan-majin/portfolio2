@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { db } from "../../../../database";
 import { Message } from "../../../../models";
+import { Model } from 'mongoose';
 
 const url = process.env.API_URL;
 
@@ -14,7 +15,7 @@ export async function DELETE(req: NextRequest, { params }: Params, res: NextResp
   await db.connect();
   const { id } = await params;
 
-  const message = await Message.findByIdAndDelete(id);
+const message = await (Message as Model<any>).findByIdAndDelete(id).lean();
 
   return new Response(JSON.stringify(message), {
    status: 201,

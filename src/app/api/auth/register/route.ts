@@ -3,6 +3,8 @@ import { User } from "../../../models";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 // import { sendEmail } from "@/helpers/mailer";
+import { Model } from 'mongoose';
+
 
 
 db.connect()
@@ -16,7 +18,8 @@ export async function POST(request: NextRequest) {
   console.log(reqBody);
 
   //check if user already exists
-  const user = await User.findOne({ email })
+    const user = await (User as Model<any>).findOne({ email }).lean();
+  
 
   if (user) {
    return NextResponse.json({ error: "User already exists" }, { status: 400 })

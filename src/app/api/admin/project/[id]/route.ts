@@ -3,6 +3,7 @@ import { db } from "../../../../database";
 import { Project } from "../../../../models";
 // import { IProject } from "../../../../interfaces";
 import { isValidObjectId } from "mongoose";
+import { Model } from 'mongoose';
 
 const url = process.env.API_URL;
 
@@ -17,8 +18,8 @@ interface Params {
       await db.connect();
       const { id } = await params;
 
-      const project = await Project.findById(id);
-  
+      const project = await (Project as Model<any>).findById(id).lean();
+      
     return new Response(JSON.stringify(project), {
         status: 201,
         headers: { 'Content-Type': 'application/json' }
@@ -40,8 +41,8 @@ interface Params {
       await db.connect();
       const { id } = await params;
 
-      const project = await Project.findByIdAndDelete(id);
-  
+      const project = await (Project as Model<any>).findByIdAndDelete(id).lean();
+
     return new Response(JSON.stringify(project), {
         status: 201,
         headers: { 'Content-Type': 'application/json' }
@@ -75,7 +76,8 @@ interface Params {
       }
 
   
-      const project = await Project.findByIdAndUpdate(id, body);
+      const project = await (Project as Model<any>).findByIdAndDelete(id, body).lean();
+
 
     //  await roject.updateOne(req.body);
     return NextResponse.json({message: `Proyecto con el ID ${id} actualizado`, data: body}, { status: 200 });
