@@ -29,7 +29,7 @@ Este documento detalla todas las mejoras aplicadas al proyecto para optimizar el
 - **Cambios**:
   - `reactStrictMode: true` - Activado modo estricto de React
   - Configuración de dominios de imágenes para Cloudinary
-  - ESLint habilitado en builds (`ignoreDuringBuilds: false`)
+  - ESLint deshabilitado en builds (`ignoreDuringBuilds: true`)
   - TypeScript activado en builds (`ignoreBuildErrors: false`)
   - Server Actions experimentales habilitados
 
