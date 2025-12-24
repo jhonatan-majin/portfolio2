@@ -13,10 +13,9 @@ const heroSchema = new Schema({
     timestamps: true
 });
 
+// Crear el índice de texto
 heroSchema.index({ title: 'text' });
 
-// const Hero = model<IHero>('Hero', heroSchema);
-
-const Hero = mongoose.model('Hero', heroSchema);
+const Hero = mongoose.models.Hero || mongoose.model('Hero', heroSchema);
 
 export default Hero;

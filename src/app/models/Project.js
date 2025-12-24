@@ -1,5 +1,4 @@
-import mongoose, { Schema, model, Model } from 'mongoose';
-// import { IProject } from '../interfaces';
+import mongoose, { Schema, model, models } from 'mongoose';
 
 const projectSchema = new Schema({
     image: { type: String },
@@ -13,10 +12,15 @@ const projectSchema = new Schema({
     timestamps: true
 });
 
+// Crear el índice de texto
 projectSchema.index({ title: 'text' });
 
-// const Projects = model<IProject>('projects', projectSchema);
-
-const Project = mongoose.model('Project', projectSchema);
+/**
+ * Explicación:
+ * mongoose.models.Project: Busca si el modelo ya fue compilado anteriormente.
+ * mongoose.model('Project', projectSchema): Lo compila solo si es la primera vez.
+ */
+const Project = mongoose.models.Project || mongoose.model('Project', projectSchema);
 
 export default Project;
+

@@ -21,11 +21,10 @@ const aboutSchema = new Schema({
     timestamps: true
 });
 
+// Crear el índice de texto
 aboutSchema.index({ title: 'text' });
 
-// const About = model<IAbout>('About', aboutSchema);
-
-const About = mongoose.model('About', aboutSchema);
+const About = mongoose.models.About || mongoose.model('About', aboutSchema);
 
 export default About;
 

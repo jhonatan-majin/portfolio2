@@ -9,10 +9,9 @@ const messageSchema = new Schema({
     timestamps: true
 });
 
+// Crear el índice de texto
 messageSchema.index({ title: 'text' });
 
-// const Message = model<IMessage>('Message', messageSchema);
-
-const Message = mongoose.model('Message', messageSchema);
+const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 
 export default Message;

@@ -22,8 +22,9 @@ const userSchema = new Schema(
  },
 );
 
+// Crear el índice de texto
 userSchema.index({ title: 'text' });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;
